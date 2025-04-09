@@ -1,0 +1,25 @@
+sendLogButton.addEventListener('click', () => {
+  if (scanDataList.length === 0) {
+    alert("履歴が空です。");
+    return;
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbzyIRKM1BQBBQAeSxCsugRETVMrLW366hpIHq27yZXHl82Lcnf3lVMAxrmsmBkhoZUNZA/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(scanDataList)
+  })
+  .then(response => response.text())
+  .then(data => {
+    console.log("送信結果:", data);
+    statusDiv.innerText = `${scanDataList.length} 件を送信しました。`;
+    scanDataList = [];
+    scanLog.innerHTML = '';
+  })
+  .catch(err => {
+    console.error("送信エラー:", err);
+    alert("送信に失敗しました。");
+  });
+});
